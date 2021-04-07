@@ -53,7 +53,7 @@ class PostgresQueryReduce<T extends ManagedObject>
   String _columnName(ManagedAttributeDescription property) {
     if (property == null) {
       // This should happen only in count
-      return "*";
+      return "1";
     }
     final columnBuilder = ColumnBuilder(builder, property);
     return columnBuilder.sqlColumnName(withTableNamespace: true);
@@ -65,8 +65,15 @@ class PostgresQueryReduce<T extends ManagedObject>
         "${reducer == _Reducer.AVG ? '::float' : ''}"; // Optional cast to float for AVG
   }
 
-  Future<U> _execute<U>(_Reducer reducer,
-      [ManagedAttributeDescription property]) async {
+  Future<U> _execute<U>(
+    _Reducer reducer, [
+    ManagedAttributeDescription property,
+  ]) async {
+    if (builder.containsSetJoins) {
+      throw StateError(
+        "Invalid query. Cannot use 'join(set: ...)' with 'reduce' query.",
+      );
+    }
     final buffer = StringBuffer();
     buffer.write("SELECT ${_function(reducer, property)} ");
     buffer.write("FROM ${builder.sqlTableName} ");

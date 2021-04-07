@@ -25,8 +25,6 @@ class PostgresQueryBuilder extends TableBuilder {
 
   final List<ColumnValueBuilder> columnValueBuilders = [];
 
-  bool get containsJoins => returning.reversed.any((p) => p is TableBuilder);
-
   String get sqlWhereClause {
     if (predicate?.format == null) {
       return null;

@@ -4,201 +4,183 @@ import 'package:aqueduct/aqueduct.dart';
 import 'package:aqueduct/src/dev/helpers.dart';
 
 void main() {
-  List<Test> objects;
-  ManagedContext ctx;
-  setUp(() async {
-    ctx = await contextWithModels([Test]);
-  });
+  group("Normal setup -", () {
+    List<Test> objects;
+    ManagedContext ctx;
 
-  tearDown(() async {
-    await ctx.close();
-  });
-
-  group("In transaction", () {
-    setUp(() async {
+    setUpAll(() async {
+      ctx = await contextWithModels([Test]);
       objects = await populate(ctx);
 
       /* Note that objects are sorted by id, and therefore all values are in sorted order */
       objects.sort((t1, t2) => t1.id.compareTo(t2.id));
     });
 
-    test("Reduce functions work correctly in a tansaction", () async {
-      int result;
-      await ctx.transaction((t) async {
-        await t.insertObject(Test()
-          ..i = 1
-          ..d = 2.0
-          ..dt = DateTime.now()
-          ..s = "x");
-        var q = Query<Test>(t);
-        result = await q.reduce.count();
+    tearDownAll(() async {
+      await ctx.close();
+    });
+
+    group("In transaction", () {
+      tearDownAll(() async {
+        await ctx.close();
+        ctx = await contextWithModels([Test]);
+        objects = await populate(ctx);
+
+        /* Note that objects are sorted by id, and therefore all values are in sorted order */
+        objects.sort((t1, t2) => t1.id.compareTo(t2.id));
+      });
+      test("Reduce functions work correctly in a tansaction", () async {
+        int result;
+        await ctx.transaction((t) async {
+          await t.insertObject(Test()
+            ..i = 1
+            ..d = 2.0
+            ..dt = DateTime.now()
+            ..s = "x");
+          var q = Query<Test>(t);
+          result = await q.reduce.count();
+        });
+
+        expect(result, objects.length + 1);
+        result = await Query<Test>(ctx).reduce.count();
+        expect(result, objects.length + 1);
+      });
+    });
+
+    group("Average", () {
+      test("produces average for int type", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.average((t) => t.i);
+        expect(result, objects.fold(0, (p, n) => p + n.i) / objects.length);
       });
 
-      expect(result, objects.length + 1);
-      result = await Query<Test>(ctx).reduce.count();
-      expect(result, objects.length + 1);
+      test("produces average for double type", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.average((t) => t.d);
+        expect(result, objects.fold(0, (p, n) => p + n.d) / objects.length);
+      });
+
+      test("with predicate", () async {
+        var q = Query<Test>(ctx)..where((p) => p.id).lessThanEqualTo(5);
+        var result = await q.reduce.average((t) => t.i);
+        expect(result, objects.sublist(0, 5).fold(0, (p, n) => p + n.i) / 5);
+      });
+    });
+
+    group("Count", () {
+      test("produces number of objects", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.count();
+        expect(result, objects.length);
+      });
+
+      test("with predicate", () async {
+        var q = Query<Test>(ctx)..where((p) => p.id).lessThanEqualTo(5);
+        var result = await q.reduce.count();
+        expect(result, 5);
+      });
+    });
+
+    group("Maximum", () {
+      test("of int", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.maximum((t) => t.i);
+        expect(result, objects.last.i);
+      });
+
+      test("of double", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.maximum((t) => t.d);
+        expect(result, objects.last.d);
+      });
+
+      test("of String", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.maximum((t) => t.s);
+        expect(result, objects.last.s);
+      });
+
+      test("of DateTime", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.maximum((t) => t.dt);
+        expect(result, objects.last.dt);
+      });
+
+      test("with predicate", () async {
+        var q = Query<Test>(ctx)..where((p) => p.id).lessThanEqualTo(5);
+        var result = await q.reduce.maximum((t) => t.i);
+        expect(result, objects[4].i);
+      });
+    });
+
+    group("Minimum", () {
+      test("of int", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.minimum((t) => t.i);
+        expect(result, objects.first.i);
+      });
+
+      test("of double", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.minimum((t) => t.d);
+        expect(result, objects.first.d);
+      });
+
+      test("of String", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.minimum((t) => t.s);
+        expect(result, objects.first.s);
+      });
+
+      test("of DateTime", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.minimum((t) => t.dt);
+        expect(result, objects.first.dt);
+      });
+
+      test("with predicate", () async {
+        var q = Query<Test>(ctx)..where((p) => p.id).greaterThan(5);
+        var result = await q.reduce.minimum((t) => t.i);
+        expect(result, objects[5].i);
+      });
+    });
+
+    group("Sum", () {
+      test("produces sum for int type", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.sum((t) => t.i);
+        expect(result, objects.fold(0, (p, n) => p + n.i));
+      });
+
+      test("produces sum for double type", () async {
+        var q = Query<Test>(ctx);
+        var result = await q.reduce.sum((t) => t.d);
+        expect(result, objects.fold(0, (p, n) => p + n.d));
+      });
+
+      test("with predicate", () async {
+        var q = Query<Test>(ctx)..where((p) => p.id).lessThanEqualTo(5);
+        var result = await q.reduce.sum((t) => t.i);
+        expect(result, objects.sublist(0, 5).fold(0, (p, a) => p + a.i));
+      });
     });
   });
 
-  group("Average", () {
-    setUp(() async {
-      objects = await populate(ctx);
+  group("Overflow setup -", () {
+    List<Test> objects;
+    ManagedContext ctx;
 
-      /* Note that objects are sorted by id, and therefore all values are in sorted order */
-      objects.sort((t1, t2) => t1.id.compareTo(t2.id));
-    });
+    setUpAll(() async {
+      ctx = await contextWithModels([Test]);
 
-    test("Average produces average for int type", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.average((t) => t.i);
-      expect(result, objects.fold(0, (p, n) => p + n.i) / objects.length);
-    });
-
-    test("Average produces average for double type", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.average((t) => t.d);
-      expect(result, objects.fold(0, (p, n) => p + n.d) / objects.length);
-    });
-
-    test("Average with predicate", () async {
-      var q = Query<Test>(ctx)..where((p) => p.id).lessThanEqualTo(5);
-      var result = await q.reduce.average((t) => t.i);
-      expect(result, objects.sublist(0, 5).fold(0, (p, n) => p + n.i) / 5);
-    });
-  });
-
-  group("Count", () {
-    setUp(() async {
-      objects = await populate(ctx);
-
-      /* Note that objects are sorted by id, and therefore all values are in sorted order */
-      objects.sort((t1, t2) => t1.id.compareTo(t2.id));
-    });
-
-    test("Count produces number of objects", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.count();
-      expect(result, objects.length);
-    });
-
-    test("Count with predicate", () async {
-      var q = Query<Test>(ctx)..where((p) => p.id).lessThanEqualTo(5);
-      var result = await q.reduce.count();
-      expect(result, 5);
-    });
-  });
-
-  group("Maximum", () {
-    setUp(() async {
-      objects = await populate(ctx);
-
-      /* Note that objects are sorted by id, and therefore all values are in sorted order */
-      objects.sort((t1, t2) => t1.id.compareTo(t2.id));
-    });
-
-    test("Maximum of int", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.maximum((t) => t.i);
-      expect(result, objects.last.i);
-    });
-
-    test("Maximum of double", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.maximum((t) => t.d);
-      expect(result, objects.last.d);
-    });
-
-    test("Maximum of String", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.maximum((t) => t.s);
-      expect(result, objects.last.s);
-    });
-
-    test("Maximum of DateTime", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.maximum((t) => t.dt);
-      expect(result, objects.last.dt);
-    });
-
-    test("Maximum with predicate", () async {
-      var q = Query<Test>(ctx)..where((p) => p.id).lessThanEqualTo(5);
-      var result = await q.reduce.maximum((t) => t.i);
-      expect(result, objects[4].i);
-    });
-  });
-
-  group("Minimum", () {
-    setUp(() async {
-      objects = await populate(ctx);
-
-      /* Note that objects are sorted by id, and therefore all values are in sorted order */
-      objects.sort((t1, t2) => t1.id.compareTo(t2.id));
-    });
-
-    test("Minimum of int", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.minimum((t) => t.i);
-      expect(result, objects.first.i);
-    });
-
-    test("Minimum of double", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.minimum((t) => t.d);
-      expect(result, objects.first.d);
-    });
-
-    test("Minimum of String", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.minimum((t) => t.s);
-      expect(result, objects.first.s);
-    });
-
-    test("Minimum of DateTime", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.minimum((t) => t.dt);
-      expect(result, objects.first.dt);
-    });
-
-    test("Minimum with predicate", () async {
-      var q = Query<Test>(ctx)..where((p) => p.id).greaterThan(5);
-      var result = await q.reduce.minimum((t) => t.i);
-      expect(result, objects[5].i);
-    });
-  });
-
-  group("Sum", () {
-    setUp(() async {
-      objects = await populate(ctx);
-
-      /* Note that objects are sorted by id, and therefore all values are in sorted order */
-      objects.sort((t1, t2) => t1.id.compareTo(t2.id));
-    });
-
-    test("Sum produces sum for int type", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.sum((t) => t.i);
-      expect(result, objects.fold(0, (p, n) => p + n.i));
-    });
-
-    test("Sum produces sum for double type", () async {
-      var q = Query<Test>(ctx);
-      var result = await q.reduce.sum((t) => t.d);
-      expect(result, objects.fold(0, (p, n) => p + n.d));
-    });
-
-    test("Sum with predicate", () async {
-      var q = Query<Test>(ctx)..where((p) => p.id).lessThanEqualTo(5);
-      var result = await q.reduce.sum((t) => t.i);
-      expect(result, objects.sublist(0, 5).fold(0, (p, a) => p + a.i));
-    });
-  });
-
-  group("Overflow", () {
-    setUp(() async {
       objects = await populate(ctx, overflow: true);
 
       /* Note that objects are sorted by id, and therefore all values are in sorted order */
       objects.sort((t1, t2) => t1.id.compareTo(t2.id));
+    });
+
+    tearDownAll(() async {
+      await ctx.close();
     });
 
     test("Sum with large integer numbers", () async {

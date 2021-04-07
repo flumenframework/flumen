@@ -68,6 +68,15 @@ class TableBuilder implements Returnable {
 
   final QueryPredicate _manualPredicate;
 
+  bool get containsJoins => returning.any((p) => p is TableBuilder);
+
+  bool get containsSetJoins => returning
+      .whereType<TableBuilder>()
+      .any((tb) => tb.isSetJoin || tb.containsSetJoins);
+
+  bool get isSetJoin =>
+      joinedBy.relationshipType == ManagedRelationshipType.hasMany;
+
   ManagedRelationshipDescription get foreignKeyProperty =>
       joinedBy.relationshipType == ManagedRelationshipType.belongsTo
           ? joinedBy
