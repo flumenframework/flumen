@@ -1,0 +1,13 @@
+name: wildfire
+description: An empty Flumen application.
+version: 0.0.1
+
+environment:
+  sdk: ">=2.9.0 <3.0.0"
+
+dependencies:
+  flumen: any
+
+dev_dependencies:
+  test: ^1.0.0
+  flumen_test: any
