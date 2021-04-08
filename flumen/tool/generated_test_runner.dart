@@ -39,7 +39,7 @@ Future main(List<String> args) async {
   for (File f in testFiles) {
     final currentTime = DateTime.now();
     final makePrompt = () =>
-        "(Pass: ${passingFiles.length} Fail: ${failingFiles.length} Remain: $remainingCounter)";
+        "(Pass ${passingFiles.length}| Fail ${failingFiles.length}| Remain $remainingCounter)";
     print("${makePrompt()} Loading test ${f.path}...");
 
     final ctx = BuildContext(

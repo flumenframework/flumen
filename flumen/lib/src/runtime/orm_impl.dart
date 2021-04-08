@@ -114,9 +114,10 @@ class ManagedEntityRuntimeImpl extends ManagedEntityRuntime
               .getSubclassesOf(Validate)
               .any((subclass) =>
                   MirrorSystem.getName(subclass.simpleName) ==
-                  type.getDisplayString()) ||
-          type.getDisplayString() == "Validate";
-      final isInstanceOfColumn = type.getDisplayString() == "Column";
+                  type.getDisplayString(withNullability: false)) ||
+          type.getDisplayString(withNullability: false) == "Validate";
+      final isInstanceOfColumn =
+          type.getDisplayString(withNullability: false) == "Column";
 
       if (isSubclassOrInstanceOfValidate) {
         importUris.add(annotation.element.source.uri);
@@ -177,7 +178,7 @@ class ManagedEntityRuntimeImpl extends ManagedEntityRuntime
   return [${constructorInvocations.join(",")}].map((v) {
     final state = v.compile(${_getManagedTypeInstantiator(property.type)}, relationshipInverseType: $inverseType);
     return ManagedValidator(v, state);
-  });  
+  });
 }()""";
   }
 
@@ -249,7 +250,7 @@ class ManagedEntityRuntimeImpl extends ManagedEntityRuntime
 
     return """
 ManagedAttributeDescription.make<${attribute.declaredType}>(entity, '${attribute.name}',
-    ${_getManagedTypeInstantiator(attribute.type)}, 
+    ${_getManagedTypeInstantiator(attribute.type)},
     transientStatus: $transienceStr,
     primaryKey: ${attribute.isPrimaryKey},
     defaultValue: ${_getDefaultValueLiteral(attribute)},
@@ -258,7 +259,7 @@ ManagedAttributeDescription.make<${attribute.declaredType}>(entity, '${attribute
     nullable: ${attribute.isNullable},
     includedInDefaultResultSet: ${attribute.isIncludedInDefaultResultSet},
     autoincrement: ${attribute.autoincrement},
-    validators: $validatorStr.expand<ManagedValidator>((i) => i as Iterable<ManagedValidator>).toList())    
+    validators: $validatorStr.expand<ManagedValidator>((i) => i as Iterable<ManagedValidator>).toList())
     """;
   }
 
@@ -301,12 +302,12 @@ ManagedRelationshipDescription.make<${relationship.declaredType}>(
             .reflectedType
             .toString();
 
-    return """() {    
+    return """() {
 final entity = ManagedEntity('${entity.tableName}', ${entity.instanceType}, ${sourcifyValue(tableDef)});
-return entity    
+return entity
     ..primaryKey = '${entity.primaryKey}'
     ..symbolMap = {${symbolMapBuffer.toString()}}
-    ..attributes = {$attributesStr};    
+    ..attributes = {$attributesStr};
 }()""";
   }
 
@@ -345,7 +346,7 @@ return entity
           if (v.type.kind == ManagedPropertyType.list ||
               v.type.kind == ManagedPropertyType.map) {
             buf.writeln("""
-            if (property.name == '$k') { return RuntimeContext.current.coerce<${v.type.type}>(value); } 
+            if (property.name == '$k') { return RuntimeContext.current.coerce<${v.type.type}>(value); }
             """);
           }
         }
@@ -424,7 +425,7 @@ class ManagedEntityRuntimeImpl extends ManagedEntityRuntime {
   ManagedEntity _entity;
 
   @override
-  ManagedEntity get entity => _entity; 
+  ManagedEntity get entity => _entity;
 
   @override
   void finalize(ManagedDataModel dataModel) {
@@ -432,7 +433,7 @@ class ManagedEntityRuntimeImpl extends ManagedEntityRuntime {
     _entity.validators = [];
     _entity.validators.addAll(_entity.attributes.values.expand((a) => a.validators));
     _entity.validators.addAll(_entity.relationships.values.expand((a) => a.validators));
-    
+
     entity.uniquePropertySet = $uniqueStr;
   }
 
@@ -444,42 +445,42 @@ class ManagedEntityRuntimeImpl extends ManagedEntityRuntime {
     }
     return object;
   }
-  
+
   @override
   void setTransientValueForKey(ManagedObject object, String key, dynamic value) {
     ${_getSetTransientValueForKeyImpl(ctx)}
   }
-  
+
   @override
   ManagedSet setOfImplementation(Iterable<dynamic> objects) {
-    return ManagedSet<$className>.fromDynamic(objects); 
+    return ManagedSet<$className>.fromDynamic(objects);
   }
-  
+
   @override
   dynamic getTransientValueForKey(ManagedObject object, String key) {
     ${_getGetTransientValueForKeyImpl(ctx)}
   }
-  
+
   @override
   bool isValueInstanceOf(dynamic value) {
     return value is $className;
   }
-  
+
   @override
   bool isValueListOf(dynamic value) {
     return value is List<$className>;
   }
-  
+
   @override
   String getPropertyName(Invocation invocation, ManagedEntity entity) {
-    ${_getGetPropertyNameImpl(ctx)}    
+    ${_getGetPropertyNameImpl(ctx)}
   }
-  
+
   @override
   dynamic dynamicConvertFromPrimitiveValue(ManagedPropertyDescription property, dynamic value) {
-    ${_getDynamicConvertFromPrimitiveValueImpl(ctx)}  
+    ${_getDynamicConvertFromPrimitiveValueImpl(ctx)}
   }
-}   
+}
     """;
   }
 }

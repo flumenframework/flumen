@@ -62,7 +62,7 @@ class FlumenCompiler extends Compiler {
           File.fromUri(context.buildDirectoryUri.resolve("pubspec.yaml"));
       final pubspecContents = json.decode(targetPubspecFile.readAsStringSync());
       pubspecContents["dev_dependencies"]["flumen_test"]["path"] =
-          "packages/flumen_test";
+          "packages/test";
       pubspecContents["dependency_overrides"]["flumen"] =
           pubspecContents["dependencies"]["flumen"];
       targetPubspecFile.writeAsStringSync(json.encode(pubspecContents));
