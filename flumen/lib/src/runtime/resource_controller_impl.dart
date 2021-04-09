@@ -9,7 +9,7 @@ import 'package:flumen/src/runtime/resource_controller/utility.dart';
 import 'package:flumen/src/runtime/resource_controller_generator.dart';
 import 'package:flumen/src/utilities/mirror_helpers.dart';
 import 'package:meta/meta.dart';
-import 'package:runtime/runtime.dart' hide firstMetadataOfType;
+import 'package:flumen_runtime/runtime.dart' hide firstMetadataOfType;
 
 class ResourceControllerRuntimeImpl extends ResourceControllerRuntime {
   ResourceControllerRuntimeImpl(this.type) {

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flumen/src/http/http.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 /// Decodes [bytes] according to [contentType].
 ///

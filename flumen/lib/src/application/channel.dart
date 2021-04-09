@@ -5,7 +5,7 @@ import 'package:flumen/src/application/service_registry.dart';
 import 'package:flumen/src/openapi/openapi.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 import '../http/http.dart';
 import 'application.dart';

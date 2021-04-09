@@ -16,7 +16,7 @@ library flumen;
 ///
 /// See documentation guides at TBD
 export 'package:logging/logging.dart';
-export 'package:safe_config/safe_config.dart';
+export 'package:flumen_config/flumen_config.dart';
 
 export 'package:flumen/src/runtime/compiler.dart';
 

@@ -3,7 +3,7 @@ import 'dart:mirrors';
 
 import 'package:flumen/src/application/channel.dart';
 import 'package:flumen_isolator/flumen_isolator.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 class GetChannelExecutable extends Executable<String> {
   GetChannelExecutable(Map<String, dynamic> message) : super(message);
@@ -26,6 +26,6 @@ class GetChannelExecutable extends Executable<String> {
   static List<String> importsForPackage(String packageName) => [
         "package:flumen/flumen.dart",
         "package:$packageName/$packageName.dart",
-        "package:runtime/runtime.dart"
+        "package:flumen_runtime/runtime.dart"
       ];
 }

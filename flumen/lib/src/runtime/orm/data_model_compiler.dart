@@ -2,7 +2,7 @@ import 'dart:mirrors';
 import 'package:flumen/src/runtime/orm/entity_builder.dart';
 
 import 'package:flumen/src/db/managed/managed.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 class DataModelCompiler {
   Map<String, dynamic> compile(MirrorContext context) {

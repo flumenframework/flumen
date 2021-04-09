@@ -5,7 +5,7 @@ import 'package:flumen/src/cli/metadata.dart';
 import 'package:flumen/src/cli/mixins/project.dart';
 import 'package:flumen/src/db/persistent_store/persistent_store.dart';
 import 'package:flumen/src/db/postgresql/postgresql_persistent_store.dart';
-import 'package:safe_config/safe_config.dart';
+import 'package:flumen_config/flumen_config.dart';
 import 'package:flumen/src/cli/command.dart';
 
 abstract class CLIDatabaseConnectingCommand implements CLICommand, CLIProject {

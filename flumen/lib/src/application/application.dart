@@ -4,7 +4,7 @@ import 'dart:isolate';
 
 import 'package:flumen/src/application/isolate_application_server.dart';
 import 'package:flumen/src/openapi/openapi.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 import 'package:logging/logging.dart';
 
 import '../http/http.dart';

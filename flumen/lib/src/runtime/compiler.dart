@@ -6,7 +6,7 @@ import 'package:flumen/src/application/channel.dart';
 import 'package:flumen/src/runtime/orm/data_model_compiler.dart';
 
 import 'package:flumen/src/runtime/impl.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 class FlumenCompiler extends Compiler {
   @override

@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flumen/flumen.dart';
-import 'package:runtime/src/analyzer.dart';
+import 'package:flumen_runtime/src/analyzer.dart';
 import 'package:flumen/src/cli/migration_source.dart';
 import 'package:command_line_agent/command_line_agent.dart';
 import 'package:test/test.dart';

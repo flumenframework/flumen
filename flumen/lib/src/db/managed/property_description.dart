@@ -1,6 +1,6 @@
 import 'package:flumen/src/openapi/openapi.dart';
 import 'package:open_api/v3.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 import '../persistent_store/persistent_store.dart';
 import '../query/query.dart';

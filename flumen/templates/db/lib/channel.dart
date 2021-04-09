@@ -63,7 +63,7 @@ class WildfireChannel extends ApplicationChannel {
 ///
 /// Configuration files must have key-value for the properties in this class.
 /// For more documentation on configuration files, see TBD and
-/// https://pub.dartlang.org/packages/safe_config.
+/// https://pub.dartlang.org/packages/flumen_config.
 class WildfireConfiguration extends Configuration {
   WildfireConfiguration(String fileName) : super.fromFile(File(fileName));
 

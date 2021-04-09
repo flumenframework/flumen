@@ -12,7 +12,7 @@ import 'package:flumen/src/http/serializable.dart';
 import 'package:flumen/src/openapi/documentable.dart';
 import 'package:flumen/src/openapi/openapi.dart';
 import 'package:flumen/src/runtime/resource_controller_impl.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 class ChannelRuntimeImpl extends ChannelRuntime implements SourceCompiler {
   ChannelRuntimeImpl(this.type);

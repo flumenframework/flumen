@@ -6,7 +6,7 @@ import 'package:flumen/src/db/managed/managed.dart';
 import 'package:flumen/src/runtime/orm/entity_builder.dart';
 import 'package:flumen/src/utilities/sourcify.dart';
 import 'package:meta/meta.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 class ManagedEntityRuntimeImpl extends ManagedEntityRuntime
     implements SourceCompiler {
@@ -411,7 +411,7 @@ return entity.symbolMap[Symbol(symbolName)];
 
     return """
 import 'package:flumen/flumen.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 import '$originalFileUri';
 ${directives.join("\n")}
 

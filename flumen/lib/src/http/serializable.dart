@@ -1,5 +1,5 @@
 import 'package:flumen/src/openapi/openapi.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 import 'http.dart';
 

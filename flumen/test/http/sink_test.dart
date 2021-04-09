@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 import 'package:test/test.dart';
 import 'package:flumen/flumen.dart';
 

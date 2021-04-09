@@ -5,7 +5,7 @@ import 'package:flumen/src/http/resource_controller_interfaces.dart';
 import 'package:flumen/src/runtime/resource_controller/documenter.dart';
 import 'package:flumen/src/runtime/resource_controller_impl.dart';
 import 'package:flumen/src/utilities/sourcify.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 String getInvokerSource(BuildContext context,
     ResourceControllerRuntimeImpl controller, ResourceControllerOperation op) {

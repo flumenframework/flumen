@@ -5,7 +5,7 @@ import 'package:flumen/src/cli/command.dart';
 import 'package:flumen/src/cli/mixins/openapi_options.dart';
 import 'package:flumen/src/cli/mixins/project.dart';
 import 'package:flumen_isolator/flumen_isolator.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 import 'package:yaml/yaml.dart';
 
 class OpenAPIBuilder extends Executable<Map<String, dynamic>> {
@@ -149,7 +149,7 @@ class OpenAPIBuilder extends Executable<Map<String, dynamic>> {
         "package:yaml/yaml.dart",
         "dart:convert",
         "dart:io",
-        "package:runtime/runtime.dart"
+        "package:flumen_runtime/runtime.dart"
       ];
 }
 

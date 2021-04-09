@@ -52,6 +52,6 @@ class SchemaBuilderExecutable extends Executable<Map<String, dynamic>> {
   static List<String> get imports => [
         "package:flumen/flumen.dart",
         "package:flumen/src/cli/migration_source.dart",
-        "package:runtime/runtime.dart"
+        "package:flumen_runtime/runtime.dart"
       ];
 }

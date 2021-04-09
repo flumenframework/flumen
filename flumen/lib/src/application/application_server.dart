@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flumen/src/application/channel.dart';
 import 'package:logging/logging.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 import '../http/controller.dart';
 import '../http/request.dart';

@@ -6,7 +6,7 @@ import 'package:flumen/flumen.dart';
 import 'package:flumen/src/cli/command.dart';
 import 'package:flumen/src/cli/metadata.dart';
 import 'package:flumen/src/cli/mixins/project.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 import 'package:args/args.dart' as arg_package;
 
 class CLIBuild extends CLICommand with CLIProject {

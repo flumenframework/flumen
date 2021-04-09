@@ -24,7 +24,7 @@ class GetSchemaExecutable extends Executable<Map<String, dynamic>> {
   static List<String> importsForPackage(String packageName) => [
         "package:flumen/flumen.dart",
         "package:$packageName/$packageName.dart",
-        "package:runtime/runtime.dart"
+        "package:flumen_runtime/runtime.dart"
       ];
 }
 

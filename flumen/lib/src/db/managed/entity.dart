@@ -2,7 +2,7 @@ import 'package:flumen/src/db/managed/backing.dart';
 import 'package:flumen/src/db/managed/key_path.dart';
 import 'package:flumen/src/openapi/documentable.dart';
 import 'package:flumen/src/openapi/openapi.dart';
-import 'package:runtime/runtime.dart';
+import 'package:flumen_runtime/runtime.dart';
 
 import '../query/query.dart';
 import 'managed.dart';
