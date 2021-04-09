@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flumen/flumen.dart';
 import 'package:flumen/src/cli/migration_source.dart';
-import 'package:isolate_executor/isolate_executor.dart';
+import 'package:flumen_isolator/flumen_isolator.dart';
 
 class SchemaBuilderExecutable extends Executable<Map<String, dynamic>> {
   SchemaBuilderExecutable(Map<String, dynamic> message)

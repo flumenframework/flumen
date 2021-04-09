@@ -7,7 +7,7 @@ import 'package:flumen/src/cli/mixins/project.dart';
 import 'package:flumen/src/cli/scripts/schema_builder.dart';
 import 'package:flumen/src/cli/migration_source.dart';
 import 'package:flumen/src/db/schema/schema.dart';
-import 'package:isolate_executor/isolate_executor.dart';
+import 'package:flumen_isolator/flumen_isolator.dart';
 
 abstract class CLIDatabaseManagingCommand implements CLICommand, CLIProject {
   @Option("migration-directory",

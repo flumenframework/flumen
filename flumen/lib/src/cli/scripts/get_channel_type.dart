@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:mirrors';
 
 import 'package:flumen/src/application/channel.dart';
-import 'package:isolate_executor/isolate_executor.dart';
+import 'package:flumen_isolator/flumen_isolator.dart';
 import 'package:runtime/runtime.dart';
 
 class GetChannelExecutable extends Executable<String> {

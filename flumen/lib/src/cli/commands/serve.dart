@@ -205,6 +205,7 @@ class CLIServer extends CLICommand with CLIProject {
     }
 
     var contents = """
+// @dart = 2.9
 import 'dart:async';
 import 'dart:io';
 
@@ -223,7 +224,7 @@ Future main(List<String> args, dynamic sendPort) async {
       ..isIpv6Only = ___IPV6_ONLY___;
 
     app.options = config;
-    
+
     await startApplication(app, ${values['NUMBER_OF_ISOLATES']}, sendPort);
 }
     """;

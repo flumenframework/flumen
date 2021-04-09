@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flumen/src/cli/command.dart';
 import 'package:flumen/src/cli/metadata.dart';
 import 'package:flumen/src/cli/scripts/get_channel_type.dart';
-import 'package:isolate_executor/isolate_executor.dart';
+import 'package:flumen_isolator/flumen_isolator.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:yaml/yaml.dart';
 import 'package:path/path.dart' as path_lib;

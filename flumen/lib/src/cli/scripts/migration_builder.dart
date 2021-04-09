@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flumen/flumen.dart';
 import 'package:flumen/src/cli/command.dart';
 import 'package:flumen/src/cli/mixins/project.dart';
-import 'package:isolate_executor/isolate_executor.dart';
+import 'package:flumen_isolator/flumen_isolator.dart';
 
 class MigrationBuilderExecutable extends Executable<Map<String, dynamic>> {
   MigrationBuilderExecutable(Map<String, dynamic> message)

@@ -20,7 +20,7 @@ class CLIClient {
     throw StateError("is not a project terminal");
   }
 
-  List<String> defaultArgs;
+  List<String> defaultArgs = [];
 
   String get output {
     return _output.toString();
@@ -160,10 +160,8 @@ class TestChannel extends ApplicationChannel {
     return files;
   }
 
-  Future<int> run(String command, [List<String> args]) async {
-    args ??= [];
-    args.insert(0, command);
-    args.addAll(defaultArgs ?? []);
+  Future<int> run(String command, [List<String> argsGiven = const []]) async {
+    final args = [command, ...argsGiven, ...defaultArgs];
 
     print("Running 'flumen ${args.join(" ")}'");
     final saved = Directory.current;
@@ -182,10 +180,8 @@ class TestChannel extends ApplicationChannel {
     return exitCode;
   }
 
-  CLITask start(String command, List<String> inputArgs) {
-    final args = inputArgs ?? [];
-    args.insert(0, command);
-    args.addAll(defaultArgs ?? []);
+  CLITask start(String command, [List<String> inputArgs = const []]) {
+    final args = [command, ...inputArgs, ...defaultArgs];
 
     print("Starting 'flumen ${args.join(" ")}'");
     final saved = Directory.current;
@@ -195,7 +191,7 @@ class TestChannel extends ApplicationChannel {
     var results = cmd.options.parse(args);
 
     final task = CLITask();
-    var elapsed = 0.0;
+    var elapsed = 0;
     final timer = Timer.periodic(const Duration(milliseconds: 100), (t) {
       if (cmd.runningProcess != null) {
         t.cancel();

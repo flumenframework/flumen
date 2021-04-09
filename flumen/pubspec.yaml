@@ -10,7 +10,7 @@ dependencies:
   analyzer: '>=0.39.4 <0.41.0'
   crypto: ^2.0.6
   logging: ^0.11.3
-  isolate_executor: ^2.0.0
+  flumen_isolator: ^0.1.0
   meta: ^1.1.5
   open_api: ^2.0.1
   password_hash: ^2.0.0

@@ -4,7 +4,7 @@ import 'package:flumen/flumen.dart';
 import 'package:flumen/src/cli/command.dart';
 import 'package:flumen/src/cli/mixins/openapi_options.dart';
 import 'package:flumen/src/cli/mixins/project.dart';
-import 'package:isolate_executor/isolate_executor.dart';
+import 'package:flumen_isolator/flumen_isolator.dart';
 import 'package:runtime/runtime.dart';
 import 'package:yaml/yaml.dart';
 

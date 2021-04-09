@@ -4,7 +4,7 @@ import 'dart:mirrors';
 import 'package:flumen/flumen.dart';
 import 'package:flumen/src/cli/migration_source.dart';
 import 'package:postgres/postgres.dart';
-import 'package:isolate_executor/isolate_executor.dart';
+import 'package:flumen_isolator/flumen_isolator.dart';
 
 class RunUpgradeExecutable extends Executable<Map<String, dynamic>> {
   RunUpgradeExecutable(Map<String, dynamic> message)
