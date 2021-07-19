@@ -1,6 +1,7 @@
 name: flumen_runtime
 description: Provides behaviors and base types for packages that can use mirrors and be AOT compiled.
-version: 0.1.0
+version: 1.0.0
+repository: https://github.com/flumenframework/flumen
 
 environment:
   sdk: '>=2.9.0 <3.0.0'
@@ -8,7 +9,7 @@ environment:
 dependencies:
   analyzer: '>=0.32.0 <0.41.0'
   args: ^1.5.0
-  flumen_isolator: ^0.1.0
+  flumen_isolator: ^1.0.0
   pubspec_parse: '>=0.1.4 <1.0.0'
   meta: ^1.1.5
   yaml: ^2.1.15

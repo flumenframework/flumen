@@ -61,8 +61,8 @@ class ResourceControllerRuntimeImpl extends ResourceControllerRuntime {
   ResourceControllerRuntimeImpl() {
     ivarParameters = [$ivarSources];
     operations = [$operationSources];
-  }    
-  
+  }
+
   void applyRequestProperties(ResourceController untypedController,
     ResourceControllerOperationInvocationArgs args) {
     ${getApplyRequestPropertiesSource(context, runtime)}
@@ -116,7 +116,7 @@ String getBodyDecoderSource(ResourceControllerParameter p) {
   if (isSerializable(p.type)) {
     return """(v) {
     return ${p.type}()
-      ..read((v as RequestBody).as(), 
+      ..read((v as RequestBody).as(),
            accept: $accept,
            ignore: $ignore,
            reject: $reject,
@@ -128,7 +128,7 @@ String getBodyDecoderSource(ResourceControllerParameter p) {
       final body = b as RequestBody;
       final bodyList = body.as<List<Map<String, dynamic>>>();
       if (bodyList.isEmpty) {
-        return ${p.type}.from([]);         
+        return ${p.type}.from([]);
       }
 
       final iterable = bodyList.map((object) {
@@ -140,22 +140,24 @@ String getBodyDecoderSource(ResourceControllerParameter p) {
             require: $require);
       }).toList();
 
-      return ${p.type}.from(iterable);       
+      return ${p.type}.from(iterable);
     }""";
   }
 
-  return """(b) { 
+  return """(b) {
     return (b as RequestBody).as<${p.type}>();
   }""";
 }
 
 String getElementDecoderSource(Type type) {
-  final className = "${type}";
-  if (reflectType(type).isSubtypeOf(reflectType(bool))) {
+  final classReflection = reflectClass(type);
+  if (classReflection.isSubtypeOf(reflectType(bool))) {
     return "(v) { return true; }";
-  } else if (reflectType(type).isSubtypeOf(reflectType(String))) {
+  } else if (classReflection.isSubtypeOf(reflectType(String))) {
     return "(v) { return v as String; }";
   }
+
+  final className = "${type}";
 
   return """(v) {
   try {
@@ -170,9 +172,9 @@ String getElementDecoderSource(Type type) {
 String getListDecoderSource(ResourceControllerParameter p) {
   if (reflectType(p.type).isSubtypeOf(reflectType(List))) {
     final mapper = getElementDecoderSource(
-      reflectType(p.type).typeArguments.first.reflectedType);
+        reflectType(p.type).typeArguments.first.reflectedType);
     return """(v) {
-  return ${p.type}.from((v as List).map($mapper));  
+  return ${p.type}.from((v as List).map($mapper));
 }  """;
   }
 
@@ -182,7 +184,7 @@ String getListDecoderSource(ResourceControllerParameter p) {
     throw ArgumentError("multiple values not expected");
   }
   return ${getElementDecoderSource(p.type)}(listOfValues.first);
-}  
+}
   """;
 }
 
@@ -196,7 +198,7 @@ ResourceControllerParameter.make<${parameter.type}>(
   acceptFilter: ${sourcifyFilter(parameter.acceptFilter)},
   ignoreFilter: ${sourcifyFilter(parameter.ignoreFilter)},
   rejectFilter: ${sourcifyFilter(parameter.rejectFilter)},
-  requireFilter: ${sourcifyFilter(parameter.requireFilter)},  
+  requireFilter: ${sourcifyFilter(parameter.requireFilter)},
   symbolName: ${sourcifyValue(parameter.symbolName)},
   location: ${sourcifyValue(parameter.location)},
   isRequired: ${sourcifyValue(parameter.isRequired)},
@@ -209,7 +211,9 @@ String getOperationSource(
     BuildContext context,
     ResourceControllerRuntimeImpl runtime,
     ResourceControllerOperation operation) {
-  final scopeElements = operation.scopes?.map((s) => "AuthScope(${sourcifyValue(s.toString())})")?.join(",");
+  final scopeElements = operation.scopes
+      ?.map((s) => "AuthScope(${sourcifyValue(s.toString())})")
+      ?.join(",");
   final namedParameters = operation.namedParameters
       .map((p) => getParameterSource(context, runtime, p))
       .join(",");
@@ -226,6 +230,6 @@ ResourceControllerOperation(
   dartMethodName: ${sourcifyValue(operation.dartMethodName)},
   httpMethod: ${sourcifyValue(operation.httpMethod)},
   pathVariables: [$pathVars],
-  invoker: ${getInvokerSource(context, runtime, operation)})  
+  invoker: ${getInvokerSource(context, runtime, operation)})
   """;
 }
